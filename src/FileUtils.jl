@@ -66,6 +66,7 @@ function replace_filenames(replacement, args...; kwargs...)
   return map_filenames(file -> replace(file, replacement), args...; kwargs...)
 end
 
+# TODO: move to a package called PkgUtils?
 function max_version(depot_path::AbstractString, pkgname::AbstractString)
   path = joinpath(depot_path, "registries", "General",
                   first(pkgname, 1), pkgname, "Versions.toml")
