@@ -3,30 +3,35 @@ module FileUtils
 using DeepDiffs
 using Pkg
 
-export replace_in_files, map_filenames, replace_filenames, max_version
+export replace_in_file, replace_in_files, map_filenames, replace_filenames, max_version
 
 function _replace_in_files(filenames, replacement; showdiffs)
   for filename in filenames
     !isfile(filename) && continue
-    txt = read(filename, String)
-    open(filename, "w") do f
-      write(f, replace(txt, replacement))
+    replace_in_file(filename, replacement; showdiffs)
+  end
+  return nothing
+end
+
+function replace_in_file(filename, replacement; showdiffs=true)
+  txt = read(filename, String)
+  open(filename, "w") do f
+    write(f, replace(txt, replacement))
+  end
+  if showdiffs
+    txt_final = read(filename, String)
+    diff = deepdiff(txt, txt_final)
+    println(filename)
+    removed_lines = removed(diff)
+    added_lines = added(diff)
+    txt_lines = split(txt, "\n")
+    txt_final_lines = split(txt_final, "\n")
+    @assert removed_lines == added_lines
+    for n in 1:length(removed_lines)
+      line_diff = deepdiff(txt_lines[removed_lines[n]], txt_final_lines[added_lines[n]])
+      println("Line $(removed_lines[n]): ", line_diff)
     end
-    if showdiffs
-      txt_final = read(filename, String)
-      diff = deepdiff(txt, txt_final)
-      println(filename)
-      removed_lines = removed(diff)
-      added_lines = added(diff)
-      txt_lines = split(txt, "\n")
-      txt_final_lines = split(txt_final, "\n")
-      @assert removed_lines == added_lines
-      for n in 1:length(removed_lines)
-        line_diff = deepdiff(txt_lines[removed_lines[n]], txt_final_lines[added_lines[n]])
-        println("Line $(removed_lines[n]): ", line_diff)
-      end
-      println()
-    end
+    println()
   end
   return nothing
 end
