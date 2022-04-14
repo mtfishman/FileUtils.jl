@@ -56,12 +56,13 @@ function replace_in_files(path, replacement; ignore_dirs=[], recursive=false, sh
 end
 
 function map_filenames(f, path=pwd(); filter=Returns(true), force=false)
-  files = Base.filter(filter, readdir(path; join=true))
+  files = Base.filter(filter, readdir(path))
   for (i, file) in enumerate(files)
-    println(file, " => ", f(file))
-    new_file = f(file)
-    if file ≠ new_file
-      mv(file, new_file; force=force)
+    old_filename = joinpath(path, file)
+    new_filename = joinpath(path, f(file))
+    println(old_filename, " => ", new_filename)
+    if old_filename ≠ new_filename
+      mv(old_filename, new_filename; force=force)
     end
   end
   return nothing
