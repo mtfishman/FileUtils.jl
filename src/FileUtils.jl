@@ -45,6 +45,15 @@ function _replace_in_files_recursive(path, replacement; ignore_dirs, showdiffs)
   return nothing
 end
 
+"""
+    replace_in_files(path::String, replacement::Pair{String,String}; ignore_dirs=[], recursive=false, showdiffs=true)
+
+# Examples
+
+```julia
+replace_in_files(".", "@show" => "@test"; recursive=true, ignore_dirs=[".git"])
+```
+"""
 function replace_in_files(path, replacement; ignore_dirs=[], recursive=false, showdiffs=true)
   if recursive
     _replace_in_files_recursive(path, replacement; ignore_dirs=ignore_dirs, showdiffs=showdiffs)
@@ -55,8 +64,17 @@ function replace_in_files(path, replacement; ignore_dirs=[], recursive=false, sh
   return nothing
 end
 
-function map_filenames(f, path=pwd(); filter=Returns(true), force=false)
-  files = Base.filter(filter, readdir(path))
+"""
+    map_filenames(f::Function, path=pwd(); filter_filenames=Returns(true), force=false)
+
+# Examples
+
+```julia
+map_filenames(filename -> replace(filename, ".txt" => ".txt.backup"); filter_filenames=startswith("example_"))
+```
+"""
+function map_filenames(f, path=pwd(); filter_filenames=Returns(true), force=false)
+  files = Base.filter(filter_filenames, readdir(path))
   for (i, file) in enumerate(files)
     old_filename = joinpath(path, file)
     new_filename = joinpath(path, f(file))
@@ -68,6 +86,15 @@ function map_filenames(f, path=pwd(); filter=Returns(true), force=false)
   return nothing
 end
 
+"""
+    replace_filenames(path=pwd(), replacement::Pair{String,String}; filter=Returns(true), force=false)
+
+# Examples
+
+```julia
+replace_filenames(pwd(), ".txt" => ".txt.backup")
+```
+"""
 function replace_filenames(replacement, args...; kwargs...)
   return map_filenames(file -> replace(file, replacement), args...; kwargs...)
 end
@@ -82,6 +109,15 @@ function max_version(depot_path::AbstractString, pkgname::AbstractString)
   return v"0.0.0"
 end
 
+"""
+    max_version(pkgname)
+
+# Examples
+
+```julia
+max_version("ITensors")
+```
+"""
 max_version(pkgname::AbstractString) = maximum(max_version.(DEPOT_PATH, pkgname))
 
 end
