@@ -7,4 +7,4 @@ FileUtils = {path = ".."}
 
 [compat]
 FileUtils = "0.1"
-Test = "1.11"
+Test = "1.10"
