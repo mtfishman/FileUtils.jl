@@ -1,7 +1,10 @@
 name = "FileUtils"
 uuid = "3ab64cf3-766e-4aaa-abdf-a104b28521f5"
+version = "0.1.1"
 authors = ["Matthew Fishman <mfishman@flatironinstitute.org> and contributors"]
-version = "0.1.0"
+
+[workspace]
+projects = ["benchmark", "dev", "docs", "examples", "test"]
 
 [deps]
 DeepDiffs = "ab62b9b5-e342-54a8-a765-a90f495de1a6"
@@ -10,6 +13,3 @@ Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 [compat]
 DeepDiffs = "1"
 julia = "1.3"
-
-[workspace]
-projects = ["benchmark", "dev", "docs", "examples", "test"]
