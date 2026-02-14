@@ -1,5 +1,5 @@
-using FileUtils
 using Documenter
+using FileUtils
 
 DocMeta.setdocmeta!(FileUtils, :DocTestSetup, :(using FileUtils); recursive = true)
 
@@ -11,9 +11,9 @@ makedocs(;
     format = Documenter.HTML(;
         prettyurls = get(ENV, "CI", "false") == "true",
         canonical = "https://mtfishman.github.io/FileUtils.jl",
-        assets = String[],
+        assets = String[]
     ),
-    pages = ["Home" => "index.md"],
+    pages = ["Home" => "index.md"]
 )
 
 deploydocs(; repo = "github.com/mtfishman/FileUtils.jl", devbranch = "main")

@@ -16,7 +16,7 @@ end
 function replace_in_file(replacement, filename; showdiffs = true)
     txt = read(filename, String)
     open(filename, "w") do f
-        write(f, replace(txt, replacement))
+        return write(f, replace(txt, replacement))
     end
     if showdiffs
         txt_final = read(filename, String)
@@ -73,7 +73,10 @@ end
 # Examples
 
 ```julia
-map_filenames(filename -> replace(filename, ".txt" => ".txt.backup"); filter_filenames = startswith("example_"))
+map_filenames(
+    filename -> replace(filename, ".txt" => ".txt.backup");
+    filter_filenames = startswith("example_")
+)
 ```
 """
 function map_filenames(f, path = pwd(); filter_filenames = Returns(true), force = false)
@@ -110,7 +113,7 @@ function max_version(depot_path::AbstractString, pkgname::AbstractString)
         "General",
         first(pkgname, 1),
         pkgname,
-        "Versions.toml",
+        "Versions.toml"
     )
     if isfile(path)
         return maximum(VersionNumber.(keys(Pkg.TOML.parse(read(path, String)))))
