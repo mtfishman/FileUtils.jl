@@ -1,10 +1,10 @@
 [deps]
-Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 FileUtils = "3ab64cf3-766e-4aaa-abdf-a104b28521f5"
-
-[sources]
-FileUtils = {path = ".."}
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 
 [compat]
-Documenter = "1"
 FileUtils = "0.1"
+Documenter = "1"
+
+[sources.FileUtils]
+path = ".."
